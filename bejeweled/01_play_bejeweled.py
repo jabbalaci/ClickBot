@@ -113,6 +113,18 @@ def click_on_cells(cell1, cell2, solver):
     click_on_cell(cell1)
     sleep(.1)
     click_on_cell(cell2)
+    
+def get_percent():
+    pix = grab_screen().load()
+    start = 155; end = 406; line = 325
+    green = (0, 247, 0); brown = (127, 116, 43)
+    #
+    cnt = 0
+    for col in xrange(start, end+1):
+        if pix[col, line] == green:
+            cnt += 1
+    #
+    return float(cnt) / (end-start) * 100
    
 def search_moves(solver):
     """
@@ -132,6 +144,9 @@ def search_moves(solver):
     while row_nb >= 0:  # 7,6,...,0
         shuffle(funcs)
         solver.read_board()
+        
+        while get_percent() > 95.0:
+            sleep(.5)
         #
         if not game_window() or game_over():
             return

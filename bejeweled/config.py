@@ -23,6 +23,8 @@ Customize x0 and y0 below according to the coordinates.
 x0 = 747
 y0 = 183
 
+x0, y0 = 746, 227
+
 # for debug purposes
 TEST = False
 

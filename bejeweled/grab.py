@@ -23,6 +23,15 @@ def grab_screen():
         fname = '/tmp/problem.png'
         im = Image.open(fname)
         return im
+    
+    
+def grab_whole_screen():
+    """
+    Grab the whole screen.
+    """
+    im = ImageGrab.grab()
+    return im
+ 
  
 def main():
     im = grab_screen()
