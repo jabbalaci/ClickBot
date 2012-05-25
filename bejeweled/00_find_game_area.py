@@ -1,5 +1,14 @@
 #!/usr/bin/env python
 
+"""
+Find a small template on the screen. The output is the X, Y
+location of the pixel where the template starts.
+
+This code is from here: http://notes.sovechkin.com/post/6354903838 .
+
+The process is called "template matching" (thanks Yves).
+"""
+
 from PIL import Image #@UnresolvedImport
 from PIL import ImageChops #@UnresolvedImport
 from grab import grab_whole_screen
