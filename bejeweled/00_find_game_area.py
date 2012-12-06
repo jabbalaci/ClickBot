@@ -21,9 +21,11 @@ TEMPLATE_SIZE = 25 * 25    # if found, stop
 def kill_notify():
     os.system('pkill xmessage')
 
+
 def notify(msg):
     kill_notify()
     os.system('xmessage "{msg}" &'.format(msg=msg))
+
 
 def matchTemplate(searchImage, templateImage):
     minScore = -1000
@@ -38,16 +40,16 @@ def matchTemplate(searchImage, templateImage):
     # make a copy of templateImage and fill with color=1
     templateMask = Image.new(mode="L", size=templateImage.size, color=1)
     #loop over each pixel in the search image
-    for xs in xrange(searchWidth-templateWidth+1):
+    for xs in xrange(searchWidth - templateWidth + 1):
         if out:
             break
-        for ys in xrange(searchHeight-templateHeight+1):
+        for ys in xrange(searchHeight - templateHeight + 1):
             #set some kind of score variable to "All equal"
-            score = templateWidth*templateHeight
+            score = templateWidth * templateHeight
             # crop the part from searchImage
-            searchCrop = searchImage.crop((xs,ys,xs+templateWidth,ys+templateHeight))
+            searchCrop = searchImage.crop((xs, ys, xs + templateWidth, ys + templateHeight))
             diff = ImageChops.difference(templateImage, searchCrop)
-            notequal = ImageChops.darker(diff,templateMask)
+            notequal = ImageChops.darker(diff, templateMask)
             countnotequal = sum(notequal.getdata())
             score -= countnotequal
 

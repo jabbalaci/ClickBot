@@ -49,9 +49,11 @@ board_down = 18
 # width and height of a board cell
 cell_size = 36
 
+
 def relx(x):
     """relative X position"""
     return x0 + x
+
 
 def rely(y):
     """relative Y position"""

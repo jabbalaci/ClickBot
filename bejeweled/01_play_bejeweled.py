@@ -21,45 +21,47 @@ def unselect_if_selected(solver):
     Unselect it.
     """
     GREEN = (0, 255, 0)
-    #
+
     def is_green(x, y):
-        return pix[x+2, y+2] == GREEN or \
-               pix[x+34, y+2] == GREEN or \
-               pix[x+2, y+34] == GREEN or \
-               pix[x+34, y+34] == GREEN
+        return pix[x + 2,  y + 2] == GREEN or \
+               pix[x + 34, y + 2] == GREEN or \
+               pix[x + 2,  y + 34] == GREEN or \
+               pix[x + 34, y + 34] == GREEN
     #
     pix = grab_screen().load()
     for i in range(cfg.SIZE):
         for j in range(cfg.SIZE):
             x = cfg.board_right + j * cfg.cell_size
             y = cfg.board_down + i * cfg.cell_size
-            if is_green(x,y):
+            if is_green(x, y):
                 x += (cfg.cell_size / 2)
                 y += (cfg.cell_size / 2)
-                mouse.click_to((cfg.relx(x),cfg.rely(y)))
+                mouse.click_to((cfg.relx(x), cfg.rely(y)))
                 return
-            
+
+
 def game_window():
     """
     Check if you still have the game window.
-    
+
     If you switch away from the game window, the script will stop.
     Thus you have a chance to get back the mouse :)
     """
     # pixel position => pixel color (RGB)
     pixel_colors = {
-        (118,36):   (228,20,197),
-        (93,262):   (104,60,188),
-        (146,322):  (231,222,132),
-        (113,286):  (0,255,255)
+        (118, 36):   (228, 20, 197),
+        (93, 262):   (104, 60, 188),
+        (146, 322):  (231, 222, 132),
+        (113, 286):  (0, 255, 255)
     }
     pix = grab_screen().load()
-    for k,v in pixel_colors.iteritems():
+    for k, v in pixel_colors.iteritems():
         if pix[k[0], k[1]] != v:
 #            print '# oops, different window detected => stop'
             return False
     # else
     return True
+
 
 def game_over():
     """
@@ -67,15 +69,17 @@ def game_over():
     """
     pix = grab_screen().load()
     return pix[234, 77] == (224, 17, 255)
-            
+
 ##########
+
 
 def play():
     """
     Play (or resume) a game.
     """
     click_to((cfg.relx(416), cfg.rely(293)))
-    
+
+
 def start_new_game():
     """
     Start a new game.
@@ -83,18 +87,21 @@ def start_new_game():
     click_to((cfg.relx(61), cfg.rely(123)))
     sleep(.2)
     click_to((cfg.relx(187), cfg.rely(284)))
-    
+
+
 def pause():
     """
     Pause the game. Call play() to resume.
     """
     click_to((cfg.relx(70), cfg.rely(313)))
 
+
 def move_mouse_away():
     mouse.mousePos((cfg.x0, cfg.y0))
 
 ##########
-    
+
+
 def click_on_cell(cell):
     """
     cell contains the matrix coordinates of a gem. Click on it.
@@ -105,7 +112,8 @@ def click_on_cell(cell):
     y = cfg.board_down + y1 * cfg.cell_size + (cfg.cell_size / 2)
 #    print '# position: ', ((cfg.relx(x), cfg.rely(y)))
     click_to((cfg.relx(x), cfg.rely(y)))
-    
+
+
 def click_on_cells(cell1, cell2, solver):
     """
     Click on two neighboring cells to switch them.
@@ -113,19 +121,23 @@ def click_on_cells(cell1, cell2, solver):
     click_on_cell(cell1)
     sleep(.1)
     click_on_cell(cell2)
-    
+
+
 def get_percent():
     pix = grab_screen().load()
-    start = 155; end = 406; line = 325
-    green = (0, 247, 0); brown = (127, 116, 43)
+    start = 155
+    end = 406
+    line = 325
+    green = (0, 247, 0)
     #
     cnt = 0
-    for col in xrange(start, end+1):
+    for col in xrange(start, end + 1):
         if pix[col, line] == green:
             cnt += 1
     #
-    return float(cnt) / (end-start) * 100
-   
+    return float(cnt) / (end - start) * 100
+
+
 def search_moves(solver):
     """
     Search for possible moves.
@@ -137,14 +149,14 @@ def search_moves(solver):
              solver.search_horizontally_hole,
              solver.search_vertically_double,
              solver.search_vertically_hole]
-    
+
     # start at the bottom row and go upwards
     row_nb = cfg.SIZE - 1
     found = False
     while row_nb >= 0:  # 7,6,...,0
         shuffle(funcs)
         solver.read_board()
-        
+
         while get_percent() > 95.0:
             sleep(.5)
         #
@@ -159,14 +171,15 @@ def search_moves(solver):
                 found = True
                 click_on_cells(cell2, cell1, solver)
                 break
-            
+
         # If we made a move in the previous loop.
         if found:
             row_nb = cfg.SIZE - 1   # restart from the bottom
             found = False
         else:    # no move was found in the row => check the previous row
             row_nb -= 1
-                  
+
+
 def main():
     """
     It has the game loop.
@@ -179,7 +192,7 @@ def main():
     while not game_over() and game_window():
         unselect_if_selected(solver)
         search_moves(solver)
-        
+
     print '__END__'
 
 #############################################################################

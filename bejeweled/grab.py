@@ -17,30 +17,31 @@ def grab_screen():
     Grab just the game area.
     """
     if not cfg.TEST:
-        im = ImageGrab.grab(bbox=(cfg.x0, cfg.y0, cfg.x0+cfg.width, cfg.y0+cfg.height))
+        im = ImageGrab.grab(bbox=(cfg.x0, cfg.y0,
+                                  cfg.x0 + cfg.width, cfg.y0 + cfg.height))
         return im
     else:   # TEST
         fname = '/tmp/problem.png'
         im = Image.open(fname)
         return im
-    
-    
+
+
 def grab_whole_screen():
     """
     Grab the whole screen.
     """
     im = ImageGrab.grab()
     return im
- 
- 
+
+
 def main():
     im = grab_screen()
     fname = '/tmp/full_snap__' + str(int(time())) + '.png'
     im.save(fname)
     print '# grabbed to', fname
- 
+
 #############################################################################
- 
+
 if __name__ == '__main__':
     sleep(3)
     main()
