@@ -1,0 +1,10 @@
+[project]
+name = "tents-and-trees"
+version = "0.1.0"
+description = "A bot solving the game Tents & Trees partially (marking grass cells)"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pillow>=11.2.1",
+    "pyautogui>=0.9.54",
+]
